@@ -27,15 +27,19 @@ header strong { font-size: 19px; } header > span { color: #bcd0e2; font-size: 13
 .canvas-wrap { position: relative; flex: 1; min-height: 0; background: #f7fbfe; }
 .react-flow { background: #f7fbfe; }
 .react-flow__background, .react-flow__background svg, .react-flow__background pattern { pointer-events: none; }
+.react-flow__attribution,
+.react-flow__panel.bottom.right,
+.react-flow__panel a[href*="reactflow.dev"] { display:none !important; }
 .mind-node { position: relative; width: max-content; min-width: 100px; max-width: 320px; padding: 12px 19px; border: 2px solid #27587a; border-radius: 13px; background: #327db1; color: #fff; box-shadow: 0 3px 8px #1a3d5633; white-space: normal; overflow-wrap: anywhere; word-break: break-word; line-height: 1.3; text-align: center; }
-.mind-node.active-single-node { background: #e78a22; border-color: #a9540c; }
-.mind-node.active-text-edit { background: #2d8bba; border-color: #f0a33a; box-shadow: 0 0 0 3px #f0a33a88, 0 3px 8px #1a3d5633; }
-.mind-node.active-subtree { background: #9b64c2; border-color: #653c87; box-shadow: 0 0 0 3px #d1a5ea88; }
-.mind-node.root-node { min-width: 132px; border-radius: 22px; background: linear-gradient(135deg, #6a3fb2, #3b72b7); border-color: #3c2778; font-weight: 750; box-shadow: 0 5px 14px #30205a55; }
-.mind-node.root-node.active-single-node { background: linear-gradient(135deg, #e79b31, #d76c28); border-color: #8f3c13; }
-.mind-node.root-node.active-subtree { background: linear-gradient(135deg, #a66bc8, #6c4aa5); border-color: #563078; }
+.mind-node.tone-orange { background:#d98b22; border-color:#a85e0c; }
+.mind-node.tone-green { background:#3b9564; border-color:#24633f; }
+.mind-node.tone-purple { background:#8258ad; border-color:#563477; }
+.mind-node.tone-red { background:#c65353; border-color:#8e2f35; }
+.mind-node.active-single-node,
+.mind-node.active-text-edit { border-color: #ffb347; outline: 5px solid #ffb347; outline-offset: 4px; box-shadow: 0 3px 8px #1a3d5633; }
+.mind-node.active-subtree { border-color: #f1c4ff; outline: 5px solid #f1c4ff; outline-offset: 4px; box-shadow: 0 3px 8px #1a3d5633; }
+.mind-node.root-node { min-width: 132px; border-radius: 22px; background: linear-gradient(135deg, #142d62, #2859b8); border-color: #10244f; font-weight: 750; box-shadow: 0 5px 14px #152c5966; }
 .mind-node.locked { box-shadow: 0 0 0 2px #263b4d88, 0 3px 8px #1a3d5633; }
-.mind-node.active-text-edit { outline: 3px solid #f0a33a; outline-offset: 3px; }
 .mind-node { touch-action: none; user-select: none; cursor: grab; }
 .mind-node input { width: 100%; min-width: 100px; max-width: 280px; border: 0; border-radius: 4px; padding: 4px; font: inherit; }
 .lock-mark { position: absolute; right: 4px; top: 2px; font-size: 10px; }

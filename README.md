@@ -39,6 +39,31 @@ Long text, CJK, emoji, URLs and unbroken strings all wrap cleanly with no `…` 
 ### One file, fully offline
 The release is one self-contained `index.html`. It opens directly from disk (`file://`) and works offline.
 
+### Pick up where you left off
+Close the page and reopen it later to restore your last outline, layout, locks and viewport. An empty saved session returns to the built-in guide.
+
+### Color-code the map from the outline
+Prefix a node with `!`, `%`, `$` or `?` to give it an orange, green, purple or red map color. The marker remains editable in the outline and stays hidden from the node label.
+
+The built-in guide demonstrates these controls with a real starter map:
+
+```text
+TextwMindmap
+	! Start here
+		Enter: sibling · Shift+Enter: child
+	Selection
+		Click once: focus the outline
+		Click twice: select the subtree
+	$ Navigate
+		Drag background to pan · wheel to zoom
+	? Edit
+		Type to edit the selected node
+		Select a subtree first, then Ctrl+X / Ctrl+V to move it
+	% Layout
+		Drag a branch to lock its root
+		Use ! % $ ? to define node colors
+```
+
 ---
 
 ## 🚀 Quick start

@@ -1,5 +1,7 @@
 {
   "name": "textwmindmap",
+  "version": "1.0.0",
+  "description": "Offline two-way outline and mindmap editor with Markdown, OneNote and PNG export.",
   "private": true,
   "type": "module",
   "scripts": {

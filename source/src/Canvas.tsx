@@ -15,7 +15,7 @@ function MindNode({ id, data }: NodeProps<Node<Data>>) {
     observer.observe(el); return () => observer.disconnect();
   }, [id]);
   const depthSize = Math.max(14, 27 - data.level * 2.5);
-  return <div ref={ref} data-node-id={id} data-label={data.item.label} data-level={data.level} style={{ fontSize: `${depthSize}px` }} className={`mind-node nopan nodrag ${data.item.parent ? '' : 'root-node'} ${data.active ? `active-${data.mode}` : ''} ${data.locked ? 'locked' : ''}`}
+  return <div ref={ref} data-node-id={id} data-label={data.item.label} data-level={data.level} style={{ fontSize: `${depthSize}px` }} className={`mind-node nopan nodrag tone-${data.item.tone} ${data.item.parent ? '' : 'root-node'} ${data.active ? `active-${data.mode}` : ''} ${data.locked ? 'locked' : ''}`}
     onPointerDown={e => {
       if (e.button !== 0) return;
       e.preventDefault(); e.stopPropagation();
@@ -86,7 +86,7 @@ export function Canvas() {
     onCopy={e => { if (!(e.target as HTMLElement).closest('textarea,input')) copyEvent(e.nativeEvent); }}
     onCut={e => { if (!(e.target as HTMLElement).closest('textarea,input')) copyEvent(e.nativeEvent, true); }}
     onPaste={e => { if (!(e.target as HTMLElement).closest('textarea,input')) pasteEvent(e.nativeEvent); }}>
-    <ReactFlow nodes={nodes} edges={edges} nodeTypes={nodeTypes} edgeTypes={edgeTypes} nodeOrigin={[.5,.5]}
+    <ReactFlow proOptions={{ hideAttribution: true }} nodes={nodes} edges={edges} nodeTypes={nodeTypes} edgeTypes={edgeTypes} nodeOrigin={[.5,.5]}
       onPaneClick={() => { holder.current?.focus(); useApp.setState({ mode: 'text-edit', focus: 'map' }); }}
       panOnDrag={dragging ? false : [0,1]} selectionOnDrag={false} zoomOnScroll={!dragging} zoomOnPinch={!dragging} zoomOnDoubleClick={false}
       autoPanOnNodeDrag={false} autoPanOnNodeFocus={false} nodeDragThreshold={4} deleteKeyCode={null} disableKeyboardA11y

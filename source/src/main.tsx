@@ -3,7 +3,7 @@ import { createRoot } from 'react-dom/client';
 import { ReactFlowProvider } from '@xyflow/react';
 import { OutlineEditor } from './OutlineEditor';
 import { Canvas } from './Canvas';
-import { active, commit, example, history, release, stopLayout, useApp } from './store';
+import { active, commit, example, history, release, stopLayout, useApp, SESSION_STORAGE_KEY } from './store';
 import { document as makeDocument } from './model/document';
 import { copyAll } from './clipboard-events';
 import { downloadMindmapImage } from './export-image';
@@ -14,6 +14,9 @@ function download(text: string, name: string, type: string) {
 }
 function App() {
   const s = useApp(), file = useRef<HTMLInputElement>(null), workspace = useRef<HTMLElement>(null), selected = active();
+  useEffect(() => {
+    try { localStorage.setItem(SESSION_STORAGE_KEY, JSON.stringify({ version: 1, text: s.doc.text, nodes: s.doc.items.map(n => ({ line: n.line, position: s.doc.positions[n.id], locked: s.doc.locked[n.id] })), selectedLine: selected?.line ?? 0, viewport: s.viewport })); } catch { /* private browsing or blocked storage */ }
+  }, [s.doc, s.viewport, selected?.line]);
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => {
       if (e.defaultPrevented || (e.target as HTMLElement).closest('textarea,input,.cm-editor,.map-focus')) return;

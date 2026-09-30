@@ -2,23 +2,41 @@ import { create } from 'zustand';
 import { append, bounds, document as makeDocument, extract, remove, rename, replaceTree, subtree, type Doc, type Item, type Point } from './model/document';
 import { simulation, type Sizes } from './model/layout';
 export const example = `TextwMindmap
-	Start here
+	! Start here
+		Enter: sibling · Shift+Enter: child
+	Selection
 		Click once: focus the outline
 		Click twice: select the subtree
-	Edit
-		Type to rename the selected node
-		Enter: sibling · Shift+Enter: child
-	Navigate
+	$ Navigate
 		Drag background to pan · wheel to zoom
-	Clipboard
-		Ctrl+X / Ctrl+V moves a selected tree
-	Layout
-		Drag a branch to lock its root`;
+	? Edit
+		Type to edit the selected node
+		Select a subtree first, then Ctrl+X / Ctrl+V to move it
+	% Layout
+		Drag a branch to lock its root
+		Use ! % $ ? to define node colors`;
 export type Mode = 'single-node' | 'subtree' | 'text-edit';
 type Snapshot = { doc: Doc; mode: Mode };
 type State = Snapshot & { undo: Snapshot[]; redo: Snapshot[]; sizes: Sizes; dragging: boolean; running: boolean; editId: string | null; selectionVersion: number; status: string; focus: 'map' | 'outline'; divider: number; viewport: { x: number; y: number; zoom: number } };
-const initial = makeDocument(example);
-export const useApp = create<State>(() => ({ doc: initial, mode: 'text-edit', focus: 'outline', divider: 38, viewport: { x: 0, y: 0, zoom: 1 }, undo: [], redo: [], sizes: {}, dragging: false, running: false, editId: null, selectionVersion: 0, status: 'Ready · open or paste an outline to begin' }));
+const SESSION_KEY = 'textwmindmap:last-session:v1';
+function restored() {
+  try {
+    const raw = localStorage.getItem(SESSION_KEY); if (!raw) return { doc: makeDocument(example), viewport: { x: 0, y: 0, zoom: 1 } };
+    const data = JSON.parse(raw); if (data?.version !== 1 || typeof data.text !== 'string' || !data.text.trim() || !Array.isArray(data.nodes) || !data.nodes.length) throw Error('empty session');
+    const doc = makeDocument(data.text);
+    for (const node of doc.items) {
+      const saved = data.nodes.find((v: { line: number }) => v.line === node.line);
+      if (saved?.position && Number.isFinite(saved.position.x) && Number.isFinite(saved.position.y)) doc.positions[node.id] = saved.position;
+      if (saved) doc.locked[node.id] = !!saved.locked;
+    }
+    doc.selected = doc.items.find(n => n.line === data.selectedLine)?.id ?? doc.items[0]?.id ?? null;
+    const viewport = data.viewport && Number.isFinite(data.viewport.zoom) ? data.viewport : { x: 0, y: 0, zoom: 1 };
+    return { doc, viewport };
+  } catch { return { doc: makeDocument(example), viewport: { x: 0, y: 0, zoom: 1 } }; }
+}
+const initial = restored();
+export const useApp = create<State>(() => ({ doc: initial.doc, mode: 'text-edit', focus: 'outline', divider: 38, viewport: initial.viewport, undo: [], redo: [], sizes: {}, dragging: false, running: false, editId: null, selectionVersion: 0, status: 'Ready · restored the last map' }));
+export const SESSION_STORAGE_KEY = SESSION_KEY;
 let frame = 0, typingAt = 0;
 let scope: Set<string> | undefined;
 const snapshot = (): Snapshot => ({ doc: structuredClone(useApp.getState().doc), mode: useApp.getState().mode });

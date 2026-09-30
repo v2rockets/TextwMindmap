@@ -1,5 +1,6 @@
 export type Point = { x: number; y: number };
-export type Item = { id: string; label: string; line: number; end: number; depth: number; parent: string | null; annotation: string };
+export type Tone = 'default' | 'orange' | 'green' | 'purple' | 'red';
+export type Item = { id: string; label: string; line: number; end: number; depth: number; parent: string | null; annotation: string; tone: Tone };
 export type Doc = { text: string; items: Item[]; positions: Record<string, Point>; locked: Record<string, boolean>; selected: string | null };
 let serial = 0;
 const uid = () => `n-${Date.now().toString(36)}-${++serial}`;
@@ -22,7 +23,10 @@ export function parse(text: string, ids: Map<number, string> = new Map()): Item[
     if (!label.trim()) return;
     const depth = columns(raw);
     while (stack.length && stack.at(-1)!.depth >= depth) stack.pop();
-    const n: Item = { id: ids.get(line) ?? uid(), label: label.trim(), line, end: lines.length, depth, parent: stack.at(-1)?.id ?? null, annotation: notes.join('=>').trim() };
+    const visible = label.trim();
+    const tone = visible.startsWith('!') ? 'orange' : visible.startsWith('%') ? 'green' : visible.startsWith('$') ? 'purple' : visible.startsWith('?') ? 'red' : 'default';
+    const display = tone === 'default' ? visible : visible.slice(1).trimStart();
+    const n: Item = { id: ids.get(line) ?? uid(), label: display, line, end: lines.length, depth, parent: stack.at(-1)?.id ?? null, annotation: notes.join('=>').trim(), tone };
     items.push(n); stack.push(n);
   });
   items.forEach((n, i) => { n.end = items.slice(i + 1).find(p => p.depth <= n.depth)?.line ?? lines.length; });
@@ -50,18 +54,19 @@ export function document(text: string, old?: Doc, ids?: Map<number, string>): Do
   if (!old && text.startsWith('TextwMindmap\n')) {
     const guide: Record<string, Point> = {
       'TextwMindmap': { x: 0, y: 0 },
-      'Start here': { x: -300, y: -250 },
-      'Click once: focus the outline': { x: -650, y: -330 },
-      'Click twice: select the subtree': { x: -660, y: -170 },
-      'Edit': { x: -300, y: 55 },
-      'Type to rename the selected node': { x: -700, y: 45 },
-      'Enter: sibling · Shift+Enter: child': { x: -700, y: 205 },
-      'Navigate': { x: 300, y: -250 },
+      'Start here': { x: -300, y: -260 },
+      'Enter: sibling · Shift+Enter: child': { x: -650, y: -260 },
+      'Selection': { x: -300, y: -20 },
+      'Click once: focus the outline': { x: -660, y: -80 },
+      'Click twice: select the subtree': { x: -660, y: 80 },
+      'Navigate': { x: 300, y: -260 },
       'Drag background to pan · wheel to zoom': { x: 690, y: -250 },
-      'Clipboard': { x: 300, y: 65 },
-      'Ctrl+X / Ctrl+V moves a selected tree': { x: 700, y: 65 },
-      'Layout': { x: 300, y: 330 },
-      'Drag a branch to lock its root': { x: 680, y: 330 },
+      'Edit': { x: 300, y: -20 },
+      'Type to edit the selected node': { x: 680, y: -20 },
+      'Select a subtree first, then Ctrl+X / Ctrl+V to move it': { x: 720, y: 140 },
+      'Layout': { x: 300, y: 260 },
+      'Drag a branch to lock its root': { x: 680, y: 240 },
+      'Use ! % $ ? to define node colors': { x: 700, y: 380 },
     };
     items.forEach(n => { const p = guide[n.label]; if (p) positions[n.id] = { ...p }; });
   }
