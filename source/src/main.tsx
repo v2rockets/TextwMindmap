@@ -5,7 +5,7 @@ import { OutlineEditor } from './OutlineEditor';
 import { Canvas } from './Canvas';
 import { active, commit, example, history, release, stopLayout, useApp, SESSION_STORAGE_KEY } from './store';
 import { document as makeDocument } from './model/document';
-import { copyAll } from './clipboard-events';
+import { copyAll, invokeTreeCopy, invokeTreePaste } from './clipboard-events';
 import { downloadMindmapImage } from './export-image';
 import './styles.css';
 
@@ -27,7 +27,7 @@ function App() {
   }, []);
   return <div className="app">
     <header><div className="brand"><strong>TextwMindmap</strong><span>outline ↔ mindmap · offline</span></div><div className="toolbar">
-      <button onClick={() => history()} disabled={!s.undo.length}>Undo</button><button onClick={() => history(true)} disabled={!s.redo.length}>Redo</button>
+      <button onClick={() => history()} disabled={!s.undo.length}>Undo</button><button onClick={() => history(true)} disabled={!s.redo.length}>Redo</button><button onClick={() => invokeTreeCopy(true, true)}>Cut</button><button onClick={() => void invokeTreePaste()}>Paste</button>
       <button onClick={() => release()}>Release subtree</button>
       <button onClick={copyAll}>Copy outline</button><button onClick={() => void downloadMindmapImage(s.doc, s.sizes)}>Save picture</button><button onClick={() => file.current?.click()}>Open map</button>
       <button onClick={() => download(JSON.stringify({ version: 1, text: s.doc.text, nodes: s.doc.items.map(n => ({ line: n.line, position: s.doc.positions[n.id], locked: s.doc.locked[n.id] })) }), 'mindmap.json', 'application/json')}>Save map</button>

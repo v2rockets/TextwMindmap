@@ -141,10 +141,11 @@ export function endDrag(cancel = false): { id: string; moved: boolean } | null {
 }
 export const TREE_MIME = 'application/x-textwmindmap-tree';
 let clipboard: { token: string; text: string; doc: Doc; root: Item; cut: boolean } | null = null;
-export function treeCopy() {
+export function treeCopy(forceSubtree = false) {
   const s = useApp.getState(), n = active(); if (!n) return null;
-  const text = s.mode === 'subtree' ? extract(s.doc, n) : n.label;
-  if (s.mode !== 'subtree') return { text, token: '' };
+  const isTree = forceSubtree || s.mode === 'subtree';
+  const text = isTree ? extract(s.doc, n) : n.label;
+  if (!isTree) return { text, token: '' };
   const token = `${Date.now()}-${Math.random()}`;
   clipboard = { token, text, doc: structuredClone(s.doc), root: n, cut: false };
   return { text, token };
