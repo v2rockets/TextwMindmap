@@ -30,39 +30,23 @@ Copy once, then paste the same structure into Markdown, OneNote or another note 
 ### Attach comments to any node
 Add `=>` after a node’s text to attach an explanation or reminder to that node. It stays with the node in the outline but remains hidden from the mindmap.
 
-### Smooth canvas navigation
-Drag the background to pan and use the wheel to zoom. The dot grid moves with the map, so you always know where you are. Click **Locate selected** to jump back to your current node.
-
-### Full labels, never truncated
-Long text, CJK, emoji, URLs and unbroken strings all wrap cleanly with no `…` cut-offs.
-
-### One file, fully offline
-The release is one self-contained `index.html`. It opens directly from disk (`file://`) and works offline.
+### Color-code the map from the outline
+Prefix a node with `!`, `%`, `$` or `?` to give it an orange, green, purple or red map color. The marker remains editable in the outline and stays hidden from the node label.
 
 ### Pick up where you left off
 Close the page and reopen it later to restore your last outline, layout, locks and viewport. An empty saved session returns to the built-in guide.
 
-### Color-code the map from the outline
-Prefix a node with `!`, `%`, `$` or `?` to give it an orange, green, purple or red map color. The marker remains editable in the outline and stays hidden from the node label.
+### Smooth canvas navigation
+Drag the background to pan and use the wheel to zoom. The dot grid moves with the map, so you always know where you are. Click **Locate selected** or **Full screen** when you need to focus on the canvas.
 
-The built-in guide demonstrates these controls with a real starter map:
+### Full labels, never truncated
+Long text, CJK, emoji, URLs and unbroken strings all wrap cleanly with no `…` cut-offs.
 
-```text
-TextwMindmap
-	! Start here
-		Enter: sibling · Shift+Enter: child
-	Selection
-		Click once: focus the outline
-		Click twice: select the subtree
-	$ Navigate
-		Drag background to pan · wheel to zoom
-	? Edit
-		Type to edit the selected node
-		Select a subtree first, then Ctrl+X / Ctrl+V to move it
-	% Layout
-		Drag a branch to lock its root
-		Use ! % $ ? to define node colors
-```
+### Save a map or picture
+Save the editable map as JSON or export the current mindmap as a PNG.
+
+### One file, fully offline
+The release is one self-contained `index.html`. It opens directly from disk (`file://`) and works offline.
 
 ---
 
@@ -71,6 +55,7 @@ TextwMindmap
 1. Download [`index.html`](index.html).
 2. Open it in your browser.
 3. Follow the built-in guide, then replace it with your own outline.
+
 ---
 
 ## 🎮 Controls
@@ -85,10 +70,11 @@ TextwMindmap
 | Undo / redo (both views) | `Ctrl/Cmd+Z` / `Ctrl/Cmd+Shift+Z` |
 | Move a subtree | Select subtree → `Ctrl/Cmd+X` → `Ctrl/Cmd+V` |
 | Copy a subtree | Select subtree → `Ctrl/Cmd+C` |
-| Cut only one node's text (children stay) | Select node → `Ctrl/Cmd+X` |
+| Cut only one node’s text (children stay) | Select node → `Ctrl/Cmd+X` |
 | Pan / zoom | Drag empty canvas / mouse wheel |
-| Drag a branch | Drag a node (only that branch's root gets locked) |
+| Drag a branch | Drag a node (only that branch’s root gets locked) |
 | Re-center on the selection | **Locate selected** |
+| Reset zoom | Click the live zoom percentage |
 
 ---
 
