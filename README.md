@@ -5,6 +5,8 @@
 **Write an indented list and get a mindmap, or draw a mindmap and export as formatted text.**
 TextwMindmap is an offline-first outline ⇄ mindmap editor that ships as a single HTML file. It needs no account, no install and no server.
 
+Available at https://v2rockets.github.io/TextwMindmap/
+
 [Features](#-features) · [Quick start](#-quick-start) · [Controls](#-controls) · [Built on text2mindmap](#-built-on-text2mindmap) · [Development](#-development) · [License](#-license)
 
 ![TextwMindmap onboarding map](screenshots/overview.png)
